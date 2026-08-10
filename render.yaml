@@ -1,0 +1,16 @@
+# Render の Blueprint。
+#
+# これがあると、Render の画面で項目を1つずつ入力しなくても、
+# ここに書いた内容でサービスを作ってくれる。
+#
+# 定義しているのは「画面」だけ。分析APIは既に手動で作成済み
+# (wine-app-hp67) なので、ここに書くと二重に作られてしまう。
+
+services:
+  - type: web
+    name: wine-app-web
+    runtime: static
+    # 画面のソースは frontend フォルダの中にある
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
