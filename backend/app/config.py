@@ -23,6 +23,29 @@ if MODE not in ("personal", "public"):
 IS_PUBLIC = MODE == "public"
 IS_PERSONAL = MODE == "personal"
 
-# 公開版で React のビルド成果物を FastAPI 自身が配信するときの置き場所。
-# 未設定なら配信しない（開発中は Vite の開発サーバを使うため）。
+# React のビルド成果物を FastAPI 自身が配信するときの置き場所。
+# 画面を静的ホスティングに分けた構成では使わない（未設定にしておく）。
 STATIC_DIR = os.environ.get("WINE_APP_STATIC_DIR", "").strip()
+
+# ブラウザから直接叩かれるAPIなので、どのサイトからの呼び出しを許すかを指定する。
+# カンマ区切り。未設定なら公開版は全許可（"*"）。
+#
+# 全許可を既定にしているのは、このAPIが認証もCookieも持たず、
+# 保存しているデータも無いため。CORSが本来守る「ログイン中の利用者に
+# なりすまして操作される」という危険が、そもそも成立しない。
+# 他サイトからの利用を締め出したい場合だけ、画面のURLを明示的に設定する。
+_origins = os.environ.get("WINE_APP_ALLOWED_ORIGINS", "").strip()
+
+DEV_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:5174",
+    "http://127.0.0.1:5174",
+]
+
+if _origins:
+    ALLOWED_ORIGINS = [o.strip() for o in _origins.split(",") if o.strip()]
+elif MODE == "public":
+    ALLOWED_ORIGINS = ["*"]
+else:
+    ALLOWED_ORIGINS = DEV_ORIGINS

@@ -16,7 +16,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from .config import IS_PUBLIC, MODE, STATIC_DIR
+from .config import ALLOWED_ORIGINS, IS_PUBLIC, MODE, STATIC_DIR
 from .database import init_db
 from .routers import analysis, imports, meta, notes
 
@@ -35,16 +35,11 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Vite の開発サーバから叩けるようにしておく。公開版を本番配信するときは
-# React のビルド成果物を FastAPI 自身が返すため、同一オリジンになり CORS は効かない。
+# 公開版は画面を別ホストに置くため、APIから見ると別オリジンからの呼び出しになる。
+# 許可するオリジンは config.py 側で決めている。
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://localhost:5174",
-        "http://127.0.0.1:5174",
-    ],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],

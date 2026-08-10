@@ -1,11 +1,18 @@
 // バックエンド(FastAPI)への薄いラッパ。
-// パスは常に相対にしておき、開発中は Vite のプロキシ経由で 8000 番へ流す。
 //
 // 分析APIは「手元の記録を送って計算結果を受け取る」形。サーバーは記録を保存しないので、
 // 記録がブラウザにある公開版でも、SQLiteにある個人版でも同じ呼び方ができる。
+//
+// VITE_API_BASE が設定されていればそのURLへ、無ければ相対パスで呼ぶ。
+// 本番の公開版は「画面は静的ホスティング・APIは別サーバー」に分けてあるため、
+// 画面側から見るとAPIは別オリジンになる。開発中は Vite のプロキシが
+// 相対パスを 8000 番へ転送するので、未設定のままでよい。
+const API_BASE = (import.meta.env.VITE_API_BASE || "").replace(/\/$/, "");
+
+const url = (path) => `${API_BASE}${path}`;
 
 async function request(path, options = {}) {
-  const response = await fetch(path, {
+  const response = await fetch(url(path), {
     headers: { "Content-Type": "application/json" },
     ...options,
   });
@@ -70,7 +77,10 @@ export const api = {
   parseImportFile: async (file) => {
     const form = new FormData();
     form.append("file", file);
-    const response = await fetch("/api/import/parse", { method: "POST", body: form });
+    const response = await fetch(url("/api/import/parse"), {
+      method: "POST",
+      body: form,
+    });
     const body = await response.json().catch(() => ({}));
     if (!response.ok) {
       throw new Error(body.detail || `読み取りに失敗しました (${response.status})`);
@@ -82,7 +92,10 @@ export const api = {
     const form = new FormData();
     form.append("file", file);
     form.append("mode", mode);
-    const response = await fetch("/api/import", { method: "POST", body: form });
+    const response = await fetch(url("/api/import"), {
+      method: "POST",
+      body: form,
+    });
     const body = await response.json().catch(() => ({}));
     if (!response.ok) {
       throw new Error(body.detail || `取り込みに失敗しました (${response.status})`);
