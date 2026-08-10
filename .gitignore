@@ -1,0 +1,18 @@
+# Python
+backend/.venv/
+__pycache__/
+*.py[cod]
+
+# データベース（記録の実体。共有したくないのでコミットしない）
+*.db
+*.sqlite3
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# エディタ・OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
