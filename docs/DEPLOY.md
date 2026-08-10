@@ -161,8 +161,14 @@ GitHub Desktop を開くと変更が一覧に出ています。
 
 3. **Add New...** → **Project**
 4. `wine-app` の **Import** を押す
-5. 設定はそのままでよい（`vercel.json` に書いてあるので自動で読まれます）
-6. **Deploy** を押す
+5. **Root Directory** の **Edit** を押して `frontend` を選ぶ
+
+   > ここが最重要です。このリポジトリは画面（`frontend`）とAPI（`backend`）が
+   > 同居しているので、「画面はこのフォルダです」と教える必要があります。
+   > 指定すると Framework Preset が自動で **Vite** になります。
+
+6. Build Command / Output Directory は**触らない**（自動判定に任せる）
+7. **Deploy** を押す
 
 1〜2分で完了し、`https://<名前>.vercel.app` が発行されます。
 **これが読者に案内する新しい公開URLです。**
@@ -244,8 +250,13 @@ Vercel が自動で作り直します。
 **「通信に失敗しました」と出る**
 → Render のサービスが停止していないか、Render のダッシュボードで確認してください。
 
-**Vercel のビルドが失敗する**
-→ ログの最後の10行を見せていただければ原因を特定します。
+**Vercel のビルドが失敗する（`cd frontend ... exited with 1` など）**
+→ **Root Directory** が `frontend` になっているか確認してください。
+　 Settings → General → Root Directory から変更できます。
+　 変更後は Deployments タブから **Redeploy** を押します。
+
+**それでも失敗する**
+→ ログの最後の10〜20行を見せていただければ原因を特定します。
 
 ---
 
