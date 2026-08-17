@@ -288,3 +288,75 @@ class ImportParseResult(BaseModel):
     notes: list[TastingNoteCreate]
     errors: list[str]
     total_rows: int
+
+
+# ---- 提案（おすすめ） ----
+
+
+class RecommendRequest(BaseModel):
+    """好みに近いワインを提案してもらうリクエスト。
+
+    分析と同じく、記録はサーバーに保存されていないのでクライアントから送る。
+    """
+
+    notes: list[TastingNoteOut] = Field(max_length=MAX_ANALYSIS_NOTES)
+    color: str = "red"
+    limit: int = Field(default=3, ge=1, le=10)
+    # maison が何点以上を付けた1本に絞るか。総合評価とまた買いたい度の
+    # 両方に効く。null にすると全件が候補になる。
+    min_owner_overall: int | None = Field(default=7, ge=0, le=10)
+    exclude_recorded: bool = True
+
+
+class TasteTypeAxis(BaseModel):
+    axis: str
+    label_ja: str
+    z: float
+
+
+class TasteType(BaseModel):
+    name: str
+    description: str
+    axes: list[TasteTypeAxis]
+
+
+class ProfileAxis(BaseModel):
+    axis: str
+    label_ja: str
+    value: float
+    catalog_mean: float
+    z: float
+
+
+class RecommendItem(BaseModel):
+    catalog_id: int
+    name: str
+    color: str
+    country: str | None
+    region: str | None
+    variety: str | None
+    vintage: int | None
+    price_yen: int | None
+    # 提案元の記録を付けた本人（maison）の評価。誰の点数なのかを画面で明示する。
+    owner_overall: int | None
+    owner_repurchase: int | None
+    distance: float
+    match: int
+    reasons: list[str]
+    caveats: list[str]
+    flavors: dict[str, int]
+    amazon_url: str
+    rakuten_url: str
+
+
+class RecommendResult(BaseModel):
+    color: str
+    n_notes: int
+    n_used: int
+    catalog_size: int
+    taste_type: TasteType
+    profile: list[ProfileAxis]
+    items: list[RecommendItem]
+    # ステマ規制対応。画面に必ず出せるよう、本文をAPI側で持つ。
+    disclosure: str
+    share_text: str

@@ -16,3 +16,11 @@ frontend/dist/
 .idea/
 .DS_Store
 Thumbs.db
+
+# note記事の下書き・発信の検討メモ（このリポジトリは公開なので載せない）
+# 記事の反応や執筆の判断材料が入っており、アプリの動作には関係しない。
+docs/note-improvements.md
+docs/note-latest-template.md
+docs/note-article-pca-redo.md
+docs/note-article-latest-*.md
+docs/x-posts.md

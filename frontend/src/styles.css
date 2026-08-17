@@ -678,3 +678,123 @@ table.data.heatmap .cell-count {
   border: 1px solid var(--line);
   color: var(--text-faint);
 }
+
+/* ---- おすすめ（好みに近い1本） ---- */
+
+/* 絞り込みのチェックボックス。1行に並べ、狭い画面では折り返す。 */
+.checkline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.checkline label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+}
+.checkline input {
+  accent-color: var(--wine-bright);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+/* 診断結果の型名。共有されることを想定して、ここだけ大きく見せる。 */
+.rec-type-name {
+  font-family: "Fraunces", serif;
+  font-size: clamp(24px, 3.4vw, 32px);
+  color: var(--gold);
+  margin: 0 0 6px;
+  line-height: 1.3;
+}
+.rec-type-desc {
+  font-size: 13.5px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin: 0 0 8px;
+}
+
+.sharebtn {
+  display: inline-block;
+  margin-top: 10px;
+  text-decoration: none;
+}
+
+/* recharts の凡例は横1列で組まれ、幅もインラインで指定される。
+   狭い画面で画面外にはみ出すので、折り返しを許可しておく。 */
+.chart-wrap .recharts-legend-wrapper {
+  max-width: 100%;
+}
+.chart-wrap .recharts-default-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px 14px;
+}
+.chart-wrap .recharts-legend-item {
+  margin-right: 0 !important;
+}
+
+/* 提案カード。押すとレーダーに重ねる1本が切り替わる。 */
+.rec-card {
+  margin-top: 18px;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.rec-card:hover {
+  border-color: var(--text-faint);
+}
+.rec-card.selected {
+  border-color: var(--wine-bright);
+}
+
+.rec-match {
+  font-family: "Work Sans", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--wine-bright);
+  margin-right: 10px;
+}
+
+.chip.rec-chip-good {
+  border-color: var(--gold);
+  color: #e6d3a6;
+}
+.chip.rec-chip-warn {
+  border-color: var(--wine-bright);
+  color: #f0c9d1;
+}
+
+.buy-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.buybtn {
+  flex: 1 1 180px;
+  text-align: center;
+  padding: 11px 16px;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  background: var(--bg-panel-raised);
+  color: var(--text);
+  font-size: 13.5px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.buybtn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* 広告であることの表示。目立たせすぎず、しかし必ず読める大きさで置く。 */
+.disclosure {
+  font-size: 11.5px;
+  color: var(--text-faint);
+  line-height: 1.7;
+  margin: 14px 2px 0;
+}

@@ -302,6 +302,98 @@ cd C:\Users\User\Documents\wine-app\backend
 成立せず、PCAの色分けも全て「未入力」になってしまうためです。
 これらはワイン側の属性であって、飲んだ人の情報ではありません。
 
+## 参考：おすすめタブのカタログとアフィリエイト設定
+
+「おすすめ」タブが提案する候補は `backend/app/data/catalog.json` です。
+記録を追加したら作り直します。
+
+```powershell
+cd C:\Users\User\Documents\wine-app\backend
+```
+```powershell
+.venv\Scripts\python scripts\build_catalog.py "C:\Users\User\Documents\wine-notes\data\wine_log.csv"
+```
+
+**APIに同梱されるファイルなので、反映するには GitHub に push して
+分析API（wine-app-hp67）が再デプロイされる必要があります。** 画面側だけ
+更新しても変わりません。
+
+### アフィリエイトIDの設定場所
+
+購入リンクはAPIが組み立てて返しています。設定するのは**画面ではなく
+分析API（wine-app-hp67）の Environment** です。
+
+1. Render のダッシュボードで **wine-app-hp67** を開く
+2. 左メニューの **Environment** を押す
+3. **Add Environment Variable** で次の2つを追加する
+4. **Save Changes** を押す（自動で再デプロイされます）
+
+**Key**: `WINE_APP_AMAZON_TAG`
+
+**Value**: AmazonアソシエイトのトラッキングID（`◯◯◯◯-22` の形）
+
+**Key**: `WINE_APP_RAKUTEN_LINK_TEMPLATE`
+
+**Value**（1行。改行を入れないこと）:
+
+```
+https://hb.afl.rakuten.co.jp/ichiba/<楽天アフィリエイトID>/?pc=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F{qq}%2F&m=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F{qq}%2F
+```
+
+> **このリポジトリは公開されているので、ここには実際のIDを書いていません。**
+> 貼り付けられる状態の値は、リポジトリの外にある
+> `C:\Users\User\Documents\render-env-values.md` に置いてあります。
+
+### この値はどこから来たのか
+
+**新しく取得したものではなく、既に持っているIDです。**
+note記事に貼ったアフィリエイトリンクの中に入っていたものを取り出せます。
+
+- Amazonのトラッキングid … `amzn.to` の短縮リンクの転送先にある `tag=` の値
+- 楽天アフィリエイトID … `a.r10.to` の転送先のURL
+  `hb.afl.rakuten.co.jp/ichiba/<ここ>/` に入っている文字列
+
+**Amazonアソシエイトも楽天アフィリエイトも、note との契約ではなく
+Amazon／楽天との契約です。** note はIDを預かって記事のリンクに付けているだけなので、
+同じIDを他の場所でも使えます。
+
+### `{qq}` は何か
+
+楽天のリンクは「URLの中に、別のURL（`pc=`）を入れる」形をしています。
+`pc=` の中身は丸ごとURLエンコードされているので、そこに置く検索語は
+**二重にエンコード**しないと日本語が壊れます。
+
+- `{q}` … 1回エンコード（URLにそのまま置くとき）
+- `{qq}` … 2回エンコード（他のURLのパラメータの中に入れるとき）
+
+楽天のテンプレートでは **`{qq}` を使ってください**。
+実際にリダイレクトを追って、検索結果ページに正しく着くことを確認済みです
+（着地URLに `scid=af_pc_etc` が付いていれば成果計測されています）。
+
+### Amazon側でやっておくこと
+
+**アプリのURLをアソシエイトのアカウントに登録してください。**
+Amazonアソシエイト運営規約は、リンクを掲載するサイトを申告することを
+求めています。note だけ登録している状態だと、規約上の位置づけが曖昧になります。
+
+1. [アソシエイト・セントラル](https://affiliate.amazon.co.jp/) にログイン
+2. 右上のアカウント名 → **アカウントの管理**
+3. **ウェブサイトとモバイルアプリの一覧を変更する** を開く
+4. `https://wine-app-web.onrender.com` を追加して保存
+
+また、規約は「Amazonのアソシエイトとして、〇〇は適格販売により収入を得ています。」
+という表記も求めています。**これはコード側で自動的に出るようにしてあります**
+（`WINE_APP_AMAZON_TAG` を設定したときだけ、おすすめタブの注意書きに追記されます）。
+サイト名を変えたい場合は `WINE_APP_SITE_NAME` で差し替えられます。
+
+### 未設定でも壊れません
+
+**設定しなくても機能は動きます。** その場合はアフィリエイトではない、ただの
+検索リンクになります。設定を忘れたまま公開しても壊れないようにしてあります。
+
+画面の開示文（「※ 購入リンクは…アフィリエイトリンクです」）は、この設定の
+有無で自動的に切り替わります。手で書き換える必要はありません。
+
 ## 参考：個人版はこれまで通り
 
 公開版を作っても、手元の個人版は影響を受けません。

@@ -5,10 +5,12 @@ import ClusterPage from "./pages/ClusterPage.jsx";
 import HeatmapPage from "./pages/HeatmapPage.jsx";
 import ImportPage from "./pages/ImportPage.jsx";
 import PcaPage from "./pages/PcaPage.jsx";
+import RecommendPage from "./pages/RecommendPage.jsx";
 import RecordPage from "./pages/RecordPage.jsx";
 
 const TABS = [
   { key: "record", label: "記録する" },
+  { key: "recommend", label: "おすすめ" },
   { key: "pca", label: "分析（PCA）" },
   { key: "cluster", label: "クラスター" },
   { key: "heatmap", label: "ヒートマップ" },
@@ -107,6 +109,9 @@ export default function App() {
                 onSaved={refresh}
                 onToast={showToast}
               />
+            )}
+            {tab === "recommend" && (
+              <RecommendPage flavors={flavors} masters={masters} notes={notes} />
             )}
             {tab === "pca" && (
               <PcaPage flavors={flavors} masters={masters} notes={notes} />

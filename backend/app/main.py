@@ -18,7 +18,7 @@ from fastapi.staticfiles import StaticFiles
 
 from .config import ALLOWED_ORIGINS, IS_PUBLIC, MODE, STATIC_DIR
 from .database import init_db
-from .routers import analysis, imports, meta, notes
+from .routers import analysis, imports, meta, notes, recommend
 
 
 @asynccontextmanager
@@ -47,6 +47,7 @@ app.add_middleware(
 
 app.include_router(meta.router)
 app.include_router(analysis.router)
+app.include_router(recommend.router)
 app.include_router(imports.router)
 
 # 記録CRUDは個人版だけ。公開版で開けておくと「誰でも書き込める共有DB」になってしまう。

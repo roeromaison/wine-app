@@ -62,6 +62,19 @@ export const api = {
   getClusters: (notes, color, k) =>
     post("/api/analysis/clusters", { notes, color, k }),
 
+  // ---- 提案（好みに近いワイン） ----
+  // minOwnerOverall に null を渡すと「maison の評価で絞らない」になる。
+  // null と未指定を区別する必要があるので ?? は使えない。
+  getRecommendations: (notes, color, options = {}) =>
+    post("/api/recommend", {
+      notes,
+      color,
+      limit: options.limit ?? 3,
+      min_owner_overall:
+        options.minOwnerOverall === undefined ? 7 : options.minOwnerOverall,
+      exclude_recorded: options.excludeRecorded ?? true,
+    }),
+
   getHeatmap: (notes, color, rowField, minCount, sort = "score") =>
     post("/api/analysis/heatmap", {
       notes,
