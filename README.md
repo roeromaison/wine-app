@@ -204,8 +204,16 @@ PCA と同じ軸・同じ標準化行列を使う（R 側も「PCAと同じ軸(k
 
 - ヒートマップのセルクリックから該当ワインの一覧へ飛ぶ導線
 
-## 将来の公開について
+## 公開について
 
-フロントは `/api` への相対パスしか叩いていない（開発中は Vite のプロキシが 8000 番へ転送）。
-Vercel / Render などに載せ替えるときは、プロキシ先を本番 API の URL に差し替え、
-`backend/app/main.py` の CORS 許可オリジンを追加すれば動く。
+公開済み。画面は Render Static Site、APIは Render Web Service に分けている。
+
+- 画面（読者に案内するURL）: https://wine-app-web.onrender.com
+- 分析API（裏方）: https://wine-app-hp67.onrender.com
+
+開発中フロントは `/api` への相対パスしか叩かない（Vite のプロキシが 8000 番へ転送）。
+本番では `frontend/.env.production` の `VITE_API_BASE` が API の絶対URLになる。
+別のホストに載せ替えるときは、この値と、必要なら
+`WINE_APP_ALLOWED_ORIGINS`（`backend/app/config.py`）を差し替えれば動く。
+
+手順は [docs/DEPLOY.md](docs/DEPLOY.md)。
