@@ -167,7 +167,23 @@ IDは新規取得したものではなく、note記事に貼ったアフィリ�
 
 ## カタログの作り直し
 
-記録を追加したら実行します。
+記録を追加したら、**`Documents` フォルダの `update-wine-data.bat` を
+ダブルクリックするだけです。** ターミナルを開く必要はありません。
+
+コマンドから実行する場合はこちら。
+
+```powershell
+powershell -ExecutionPolicy Bypass -File "C:\Users\User\Documents\update-wine-data.ps1"
+```
+
+`-ExecutionPolicy Bypass` が要るのは、Windows が既定でPowerShellスクリプトの
+実行を止めるためです（このPCの設定は `Undefined` ＝ 既定の `Restricted`）。
+この指定はそのウィンドウの中だけに効き、PCの設定は変えません。
+
+R の分析、カタログ、デモデータの3つを作り直し、最後に「push が必要かどうか」まで
+判定して表示します。文字コードの確認と変換も入っています。
+
+カタログだけ作り直したい場合は、こちらでも同じです。
 
 ```powershell
 cd C:\Users\User\Documents\wine-app\backend

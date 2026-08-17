@@ -33,12 +33,11 @@
 返すだけの形（`POST /api/analysis/...`）にしてあるので、記録がどこにあっても動く。
 これによりモードごとに分析コードを分ける必要がなくなっている。
 
-デプロイ手順は [docs/DEPLOY.md](docs/DEPLOY.md)、公開告知の記事下書きは
-[docs/note-article-draft.md](docs/note-article-draft.md)。
+デプロイ手順は [docs/DEPLOY.md](docs/DEPLOY.md)。
 
 ### 公開版の構成（画面とAPIを分ける理由）
 
-画面は静的ホスティング（Vercel）、分析APIは Render に分けている。
+画面は静的ホスティング（Render Static Site）、分析APIは Render Web Service に分けている。
 
 Render の無料プランは15分アクセスがないと眠り、次の訪問者は起動を1分ほど待つ。
 画面ごと Render に置くと**その1分は真っ白**になる。アプリのファイル自体が
