@@ -23,6 +23,13 @@ body {
 }
 
 .app {
+  /* 日本語の折り返し。既定だと「その場で更新されます」の途中など、
+     文節の切れ目でないところで改行されて読みにくい。
+     auto-phrase は文節を見て折り返す（Chrome/Edge）。
+     対応していないブラウザでは、これまでどおりの折り返しになるだけ。 */
+  word-break: auto-phrase;
+  text-wrap: pretty;
+
   min-height: 100vh;
   background:
     radial-gradient(ellipse 800px 500px at 15% -10%, rgba(140, 47, 66, 0.18), transparent 60%),
@@ -71,6 +78,10 @@ h1 {
   max-width: 620px;
   line-height: 1.7;
 }
+/* 文ごとに行を分ける。1文が長いと途中で折り返されて読みにくいため。 */
+.subhead span {
+  display: block;
+}
 
 /* ---- タブ ---- */
 .tabs {
@@ -97,6 +108,19 @@ h1 {
 .tab.active {
   color: var(--gold);
   border-bottom-color: var(--gold);
+}
+
+/* タブは7つあり、狭い画面では2〜3行に折り返す。横スクロールにすると
+   画面外のタブに気づかれないので、折り返しは残したまま高さだけ詰める。 */
+@media (max-width: 480px) {
+  .tabs {
+    gap: 2px;
+    margin-bottom: 20px;
+  }
+  .tab {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
 }
 
 /* ---- レイアウト ---- */
@@ -816,4 +840,72 @@ table.data.heatmap .cell-count {
   color: var(--text-faint);
   line-height: 1.7;
   margin: 14px 2px 0;
+}
+
+/* ---- アプリの使い方 ---- */
+
+.usage-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.usage-step {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.usage-step-n {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: "Fraunces", serif;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.usage-step-title {
+  font-family: "Fraunces", serif;
+  font-size: 15px;
+  color: var(--text);
+  margin: 4px 0 6px;
+}
+
+.usage-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 13px;
+  color: var(--text-faint);
+  line-height: 1.9;
+}
+.usage-list strong {
+  color: var(--gold);
+}
+
+/* 使い方タブの中の遷移ボタン。購入ボタンと同じ見た目を流用する。 */
+.buy-row button.buybtn {
+  font-family: "Work Sans", sans-serif;
+  cursor: pointer;
+}
+
+/* 2回目以降の流れ。3ステップとは別の囲みにして、繰り返しだと分かるようにする。 */
+.usage-cycle {
+  margin-top: 22px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg-panel-raised);
+}
+.usage-ordered {
+  padding-left: 18px;
+  color: var(--text-dim);
+}
+.usage-ordered strong {
+  color: var(--text);
 }

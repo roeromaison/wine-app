@@ -80,13 +80,44 @@ export default function ImportPage({ notes, onImported, onToast }) {
 
   return (
     <div style={{ maxWidth: 640 }}>
+      {/* 続けて使う人がいちばん必要なのは書き出し。取り込みより先に置く。
+          ブラウザ保存の公開版では、これをしないと記録が消えるため。 */}
       <div className="panel">
-        <p className="panel-title">これまでの記録を取り込む</p>
+        <p className="panel-title">
+          記録を書き出して保存する
+          <span className="count">{notes.length}件</span>
+        </p>
+
+        {isBrowserStorage && (
+          <p className="meta-line" style={{ marginBottom: 16 }}>
+            {"記録は"}
+            <strong>お使いのブラウザの中だけ</strong>
+            {"にあります。ブラウザの履歴やサイトデータを消すと一緒に消えるので、"}
+            {"続けて記録するなら、いったんCSVに書き出して手元に保存してください。"}
+            {"次に使うときは、そのファイルを下から読み込めば続きから記録できます。"}
+          </p>
+        )}
+
+        <button
+          className="savebtn"
+          onClick={() => downloadCsv(notes)}
+          disabled={notes.length === 0}
+        >
+          CSVに書き出す（{notes.length}件）
+        </button>
+
+        <p className="meta-line" style={{ marginTop: 12 }}>
+          {"Excelでも開けます。書き出したファイルはそのまま読み込み直せます。"}
+        </p>
+      </div>
+
+      <div className="panel">
+        <p className="panel-title">ファイルから読み込む</p>
 
         <p className="meta-line" style={{ marginBottom: 16 }}>
-          Excel（.xlsx）または CSV をそのままアップロードできます。文字コードは
-          Shift-JIS / UTF-8 のどちらでも読み取ります。ワイン名と日付が同じ行を
-          「同じ1本」とみなします。
+          {"Excel（.xlsx）または CSV をそのままアップロードできます。"}
+          {"文字コードは Shift-JIS / UTF-8 のどちらでも読み取ります。"}
+          {"ワイン名と日付が同じ行を「同じ1本」とみなします。"}
           {isBrowserStorage &&
             "アップロードしたファイルは集計のために読み取るだけで、サーバーには保存されません。"}
         </p>
@@ -166,45 +197,31 @@ export default function ImportPage({ notes, onImported, onToast }) {
         )}
       </div>
 
-      <div className="panel">
-        <p className="panel-title">
-          データの管理<span className="count">{notes.length}件</span>
-        </p>
+      {isBrowserStorage && (
+        <div className="panel">
+          <p className="panel-title">お試しと、やり直し</p>
 
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-          <button
-            className="ghostbtn"
-            onClick={() => downloadCsv(notes)}
-            disabled={notes.length === 0}
-          >
-            CSVに書き出す
-          </button>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            <button className="ghostbtn" onClick={handleLoadSample} disabled={busy}>
+              サンプルを読み込む
+            </button>
+            <button
+              className="ghostbtn"
+              onClick={handleClear}
+              disabled={notes.length === 0}
+            >
+              すべて削除
+            </button>
+          </div>
 
-          {isBrowserStorage && (
-            <>
-              <button className="ghostbtn" onClick={handleLoadSample} disabled={busy}>
-                サンプルを読み込む
-              </button>
-              <button
-                className="ghostbtn"
-                onClick={handleClear}
-                disabled={notes.length === 0}
-              >
-                すべて削除
-              </button>
-            </>
-          )}
-        </div>
-
-        {isBrowserStorage && (
           <p className="meta-line" style={{ marginTop: 14 }}>
-            この画面の記録は、サーバーではなく<strong>お使いのブラウザの中だけ</strong>に
-            保存されています。他の人には見えませんが、ブラウザの履歴やサイトデータを
-            消すと一緒に消えます。残しておきたい記録は CSV に書き出してください。
-            書き出したファイルはそのまま取り込み直せます。
+            {"「サンプルを読み込む」は、maison の記録80件（商品名と価格は伏せたもの）を"}
+            {"入れて動きを確認するためのものです。"}
+            <strong>{"いまの記録は置き換わります。"}</strong>
+            {"残しておきたい場合は、先に上のCSV書き出しをしてください。"}
           </p>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

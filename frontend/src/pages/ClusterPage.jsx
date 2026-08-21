@@ -127,9 +127,10 @@ export default function ClusterPage({ flavors, masters, notes }) {
               <PcaScatter groups={groups} varianceRatio={result.variance_ratio} />
             </div>
             <p className="meta-line">
-              香味の似ているワイン同士をまとめ、PCAマップ上でグループごとに色分けしています。
-              グループは総合評価の平均が高い順に番号を振っているので、
-              グループ1があなたの好みに最も近い一群です。
+              {"香味の似ているワイン同士をまとめ、"}
+              {"PCAマップ上でグループごとに色分けしています。"}
+              {"グループは総合評価の平均が高い順に番号を振っているので、"}
+              {"グループ1があなたの好みに最も近い一群です。"}
             </p>
 
             {result.axes_excluded.length > 0 && (

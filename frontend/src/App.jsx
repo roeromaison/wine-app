@@ -7,14 +7,17 @@ import ImportPage from "./pages/ImportPage.jsx";
 import PcaPage from "./pages/PcaPage.jsx";
 import RecommendPage from "./pages/RecommendPage.jsx";
 import RecordPage from "./pages/RecordPage.jsx";
+import UsagePage from "./pages/UsagePage.jsx";
 
 const TABS = [
+  { key: "usage", label: "アプリの使い方" },
   { key: "record", label: "記録する" },
   { key: "recommend", label: "おすすめ" },
   { key: "pca", label: "分析（PCA）" },
   { key: "cluster", label: "クラスター" },
   { key: "heatmap", label: "ヒートマップ" },
-  { key: "import", label: "インポート" },
+  // 「インポート」だと書き出しがここにあると分からないので、両方を名前に入れる。
+  { key: "import", label: "保存・読み込み" },
 ];
 
 const EMPTY_MASTERS = {
@@ -27,6 +30,9 @@ const EMPTY_MASTERS = {
 
 export default function App() {
   const [tab, setTab] = useState("record");
+  // 記録がゼロの初回訪問だけ、最初に開くタブを「アプリの使い方」にする。
+  // 一度切り替えたあとは邪魔をしないよう、判定は初回の読み込み時だけ行う。
+  const [tabDecided, setTabDecided] = useState(false);
   const [flavors, setFlavors] = useState([]);
   const [masters, setMasters] = useState(EMPTY_MASTERS);
   const [notes, setNotes] = useState([]);
@@ -55,6 +61,7 @@ export default function App() {
         const flavorsData = await api.listFlavors();
         setFlavors(flavorsData);
         await refresh();
+        setTabDecided(true);
       } catch (err) {
         setBootError(
           `バックエンドに接続できませんでした（${err.message}）。` +
@@ -64,14 +71,28 @@ export default function App() {
     })();
   }, [refresh]);
 
+  useEffect(() => {
+    if (!tabDecided) return;
+    if (isBrowserStorage && notes.length === 0) setTab("usage");
+  }, [tabDecided]); // notes は初回判定にだけ使う（依存に入れない）
+
   return (
     <div className="app">
       <div className="shell">
         <p className="eyebrow">roero-maison</p>
         <h1>ワインをデータで飲んでいます</h1>
+        {/* 日本語のJSXテキストを行またぎで書くと、改行がスペース1つに変換されて
+            文中に空白が入ってしまう。文字列式に分けて書けば空白は入らない。 */}
+        {/* 文ごとに span で区切って、折り返しが文の途中から始まらないようにする。
+            文の中の折り返しは word-break: auto-phrase が文節で切ってくれる。 */}
         <p className="subhead">
-          産地とブドウ品種を入力し、香味13項目をクリックで評価すると、レーダーチャートが
-          その場で更新されます。記録が溜まったら、分析タブで好みの地図（PCA）を確認できます。
+          <span>
+            {"香味13項目をクリックで評価すると、レーダーチャートがその場で更新されます。"}
+          </span>
+          <span>
+            {"記録が溜まると、好みの地図（PCA）や"}
+            {"似たワインのグループ分けが見られます。"}
+          </span>
         </p>
 
         {bootError && <div className="notice error">{bootError}</div>}
@@ -80,10 +101,11 @@ export default function App() {
             まず何を試せばいいかをここで示す。 */}
         {!bootError && isBrowserStorage && notes.length === 0 && (
           <div className="notice" style={{ marginBottom: 22 }}>
-            記録はお使いのブラウザの中だけに保存され、サーバーには送られません。
-            まず動きを見たい場合は「インポート」タブの
-            <strong>「サンプルを読み込む」</strong>から、実際のテイスティング記録
-            80件（商品名や価格を伏せたもの）を読み込めます。
+            {"記録はお使いのブラウザの中だけに保存され、サーバーには送られません。"}
+            {"初めての方は"}
+            <strong>「アプリの使い方」</strong>
+            {"タブをご覧ください。記録を続けるための手順と、"}
+            {"サンプルの読み込み方をまとめてあります。"}
           </div>
         )}
 
@@ -101,6 +123,9 @@ export default function App() {
               ))}
             </div>
 
+            {tab === "usage" && (
+              <UsagePage onNavigate={setTab} noteCount={notes.length} />
+            )}
             {tab === "record" && (
               <RecordPage
                 flavors={flavors}

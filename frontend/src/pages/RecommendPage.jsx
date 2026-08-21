@@ -139,9 +139,10 @@ export default function RecommendPage({ flavors, masters, notes }) {
         </div>
 
         <p className="meta-line" style={{ marginTop: 12 }}>
-          あなたが高く評価した記録の香味を平均して「好みプロファイル」を作り、
-          maison が実際に飲んで13項目を付けた記録の中から、香味の近い順に並べています。
-          お店の在庫ではなく、同じ基準で採点された実測値との比較です。
+          {"あなたが高く評価した記録の香味を平均して「好みプロファイル」を作り、"}
+          {"maison が実際に飲んで13項目を付けた記録の中から、"}
+          {"香味の近い順に並べています。"}
+          {"お店の在庫ではなく、同じ基準で採点された実測値との比較です。"}
         </p>
 
         {loading && <div className="notice">計算中…</div>}
@@ -263,8 +264,9 @@ export default function RecommendPage({ flavors, masters, notes }) {
           {/* ステマ規制対応。リンクを出す画面に必ず表示する。 */}
           <p className="disclosure">{result.disclosure}</p>
           <p className="disclosure">
-            ヴィンテージは年によって変わります。リンクは商品名での検索結果を開くので、
-            表示される価格や年号が上の記録と一致しないことがあります。
+            {"ヴィンテージは年によって変わります。"}
+            {"リンクは商品名での検索結果を開くので、"}
+            {"表示される価格や年号が上の記録と一致しないことがあります。"}
           </p>
         </>
       )}
