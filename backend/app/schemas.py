@@ -340,8 +340,14 @@ class RecommendItem(BaseModel):
     # 提案元の記録を付けた本人（maison）の評価。誰の点数なのかを画面で明示する。
     owner_overall: int | None
     owner_repurchase: int | None
+    # 並び順を決めているのは distance だが、画面には出さない。
+    # 標準偏差で割った値なので、記録の 0〜5 という尺度と対応しないため。
     distance: float
-    match: int
+    # 近い順の順位。画面には「No.1」として出す。
+    rank: int
+    # 0〜5 の生の尺度で、好みと1点差以内だった項目数。画面に出す近さの指標。
+    axes_within_1: int
+    axes_total: int
     reasons: list[str]
     caveats: list[str]
     flavors: dict[str, int]

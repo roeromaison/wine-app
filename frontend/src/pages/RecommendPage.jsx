@@ -76,6 +76,11 @@ export default function RecommendPage({ flavors, masters, notes }) {
 
   const highlight = result?.items?.[selected] ?? null;
 
+  const colorLabel = useMemo(
+    () => masters.colors.find((c) => c.key === color)?.label ?? "",
+    [masters.colors, color]
+  );
+
   const shareHref = useMemo(() => {
     if (!result) return "";
     const text = `${result.share_text}\n\n${SHARE_TAGS}`;
@@ -193,6 +198,11 @@ export default function RecommendPage({ flavors, masters, notes }) {
             </a>
           </div>
 
+          {/* 母数の説明はここで1回だけ。カードごとに繰り返すと重くなる。 */}
+          <p className="rec-list-heading">
+            あなたに近い順（maison が飲んだ{colorLabel}ワイン{result.catalog_size}本から）
+          </p>
+
           {result.items.map((item, index) => (
             <div
               className={`panel rec-card ${index === selected ? "selected" : ""}`}
@@ -201,7 +211,7 @@ export default function RecommendPage({ flavors, masters, notes }) {
             >
               <p className="panel-title">
                 <span>
-                  <span className="rec-match">{item.match}%</span>
+                  <span className="rec-match">No.{item.rank}</span>
                   {item.name}
                 </span>
                 <span className="count">
@@ -217,6 +227,14 @@ export default function RecommendPage({ flavors, masters, notes }) {
                   .join(" / ")}
                 {item.price_yen != null &&
                   `　購入時 ${item.price_yen.toLocaleString()}円`}
+              </p>
+
+              {/* 近さの指標。距離そのものは標準偏差で割った値で記録の尺度と
+                  対応しないため、画面では「1点差以内が何項目か」で示す。 */}
+              <p className="rec-closeness">
+                {item.axes_total}項目中
+                <strong>{item.axes_within_1}項目</strong>
+                が、あなたの好みと1点差以内
               </p>
 
               <ReasonChips reasons={item.reasons} caveats={item.caveats} />

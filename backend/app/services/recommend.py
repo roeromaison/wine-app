@@ -288,7 +288,15 @@ def recommend(
 
         # 軸ごとの差の二乗平均平方根。項目数で割っているので
         # 「1項目あたり平均で何SDずれているか」として読める。
+        # 並び順を決めるのはこの距離だが、画面には出さない。
+        # 標準偏差で割った値は、記録している0〜5の尺度と対応しないため。
         distance = float(np.sqrt(np.mean(gap**2)))
+
+        # 画面に出す近さの指標。0〜5の生の尺度で「何項目が1点差以内か」を数える。
+        # 訪問者が記録に使っているのと同じ物差しなので、自分で検算できる。
+        raw_gap = np.abs(_vector(item) - profile)
+        axes_within_1 = int((raw_gap <= 1.0).sum())
+
         reasons, caveats = _reasons(z_profile, z_item)
 
         scored_items.append(
@@ -304,9 +312,8 @@ def recommend(
                 "owner_overall": item.get("overall_0_10"),
                 "owner_repurchase": item.get("repurchase_0_10"),
                 "distance": distance,
-                # 距離をそのまま出しても伝わらないので指標に変える。
-                # 1項目あたり1SDずれで37%、0.5SDで61%、0.2SDで82%。
-                "match": int(round(100 * float(np.exp(-distance)))),
+                "axes_within_1": axes_within_1,
+                "axes_total": len(FLAVOR_KEYS),
                 "reasons": reasons,
                 "caveats": caveats,
                 "flavors": {
@@ -326,6 +333,9 @@ def recommend(
         )
 
     scored_items.sort(key=lambda r: r["distance"])
+    for position, item in enumerate(scored_items, start=1):
+        item["rank"] = position
+
     taste_type = _taste_type(z_profile)
 
     return {

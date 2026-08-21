@@ -751,12 +751,31 @@ table.data.heatmap .cell-count {
   border-color: var(--wine-bright);
 }
 
+/* 「あなたに近い順（… 48本から）」。母数はここで1回だけ示す。 */
+.rec-list-heading {
+  font-size: 12.5px;
+  color: var(--text-faint);
+  margin: 26px 2px 0;
+}
+
 .rec-match {
   font-family: "Work Sans", sans-serif;
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 600;
   color: var(--wine-bright);
   margin-right: 10px;
+  white-space: nowrap;
+}
+
+/* 近さの指標。0〜5の記録と同じ尺度なので、読者が自分で検算できる。 */
+.rec-closeness {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin: 12px 0 0;
+}
+.rec-closeness strong {
+  color: var(--gold);
+  font-weight: 600;
 }
 
 .chip.rec-chip-good {
