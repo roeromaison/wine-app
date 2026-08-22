@@ -152,8 +152,8 @@ export default function RecommendPage({ flavors, masters, notes }) {
             {notes.length === 0 && (
               <>
                 <br />
-                「インポート」タブの「サンプルを読み込む」を押すと、
-                80件の記録が入った状態で試せます。
+                {"「保存・読み込み」タブの「サンプルを読み込む」を押すと、"}
+                {"80件の記録が入った状態で試せます。"}
               </>
             )}
           </div>
@@ -174,18 +174,20 @@ export default function RecommendPage({ flavors, masters, notes }) {
             <p className="rec-type-desc">{result.taste_type.description}</p>
 
             <div className="chart-wrap tall">
+              {/* note記事のレーダーと同じ約束事にする。
+                  実線＝いま見ている1本、破線＝比較の基準（あなたの好み）。
+                  凡例にワイン名を入れるとスマホで横にはみ出すので短い語にする。 */}
               <FlavorRadar
                 flavors={flavors}
-                values={profileValues}
-                compare={highlight ? highlight.flavors : null}
-                // 凡例にワイン名を入れるとスマホで横にはみ出す。
-                // どの1本かは下のキャプションで示す。
-                labels={{ main: "あなたの好み", compare: "選んだ1本" }}
+                values={highlight ? highlight.flavors : profileValues}
+                compare={highlight ? profileValues : null}
+                labels={{ main: "選んだ1本", compare: "あなたの好み" }}
               />
             </div>
             {highlight && (
               <p className="radar-caption">
-                破線は「{highlight.name}」。カードを押すと重ねる1本を切り替えられます。
+                {"実線が「" + highlight.name + "」、破線があなたの好みです。"}
+                {"カードを押すと切り替えられます。"}
               </p>
             )}
 
@@ -222,23 +224,44 @@ export default function RecommendPage({ flavors, masters, notes }) {
                 </span>
               </p>
 
-              <p className="meta-line">
-                {[item.country, item.variety, item.vintage]
-                  .filter(Boolean)
-                  .join(" / ")}
-                {item.price_yen != null &&
-                  `　購入時 ${item.price_yen.toLocaleString()}円`}
-              </p>
+              {/* 左に説明、右に小さなレーダー。3本の形の違いを一覧で見比べられる。
+                  写真の代わりにこれを置いているのは、権利の心配が無いうえに
+                  「なぜ近いのか」がそのまま絵になるため。 */}
+              <div className="rec-body">
+                <div>
+                  <p className="meta-line">
+                    {[item.country, item.variety, item.vintage]
+                      .filter(Boolean)
+                      .join(" / ")}
+                    {item.price_yen != null &&
+                      `　購入時 ${item.price_yen.toLocaleString()}円`}
+                  </p>
 
-              {/* 近さの指標。距離そのものは標準偏差で割った値で記録の尺度と
-                  対応しないため、画面では「1点差以内が何項目か」で示す。 */}
-              <p className="rec-closeness">
-                {item.axes_total}項目中
-                <strong>{item.axes_within_1}項目</strong>
-                が、あなたの好みと1点差以内
-              </p>
+                  {/* 近さの指標。距離そのものは標準偏差で割った値で記録の尺度と
+                      対応しないため、画面では「1点差以内が何項目か」で示す。 */}
+                  <p className="rec-closeness">
+                    {item.axes_total}項目中
+                    <strong>{item.axes_within_1}項目</strong>
+                    が、あなたの好みと1点差以内
+                  </p>
 
-              <ReasonChips reasons={item.reasons} caveats={item.caveats} />
+                  <ReasonChips reasons={item.reasons} caveats={item.caveats} />
+                </div>
+
+                <div className="rec-mini-radar">
+                  {/* ResponsiveContainer は親の高さを見るので、
+                      高さを持つ入れ物で包む必要がある。 */}
+                  <div className="rec-mini-chart">
+                    <FlavorRadar
+                      flavors={flavors}
+                      values={item.flavors}
+                      compare={profileValues}
+                      compact
+                    />
+                  </div>
+                  <p className="rec-mini-caption">実線＝この1本／破線＝好み</p>
+                </div>
+              </div>
 
               <div className="buy-row">
                 <a

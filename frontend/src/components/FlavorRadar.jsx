@@ -18,6 +18,9 @@ export default function FlavorRadar({
   values,
   compare = null,
   labels = null,
+  // compact: カードの中に小さく置く用。軸名と凡例を省いて形だけ見せる。
+  // 小さいサイズだと軸名が潰れて読めず、かえって邪魔になるため。
+  compact = false,
 }) {
   const data = flavors.map((f) => ({
     subject: f.label,
@@ -31,9 +34,12 @@ export default function FlavorRadar({
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <RadarChart data={data} outerRadius="72%">
+      <RadarChart data={data} outerRadius={compact ? "82%" : "72%"}>
         <PolarGrid stroke="#3a2d26" />
-        <PolarAngleAxis dataKey="subject" tick={{ fill: "#a89787", fontSize: 11 }} />
+        <PolarAngleAxis
+          dataKey="subject"
+          tick={compact ? false : { fill: "#a89787", fontSize: 11 }}
+        />
         <PolarRadiusAxis domain={[0, 5]} tick={false} axisLine={false} />
         {compare && (
           <Radar
@@ -55,7 +61,7 @@ export default function FlavorRadar({
           fillOpacity={0.45}
           isAnimationActive={false}
         />
-        {compare && (
+        {compare && !compact && (
           <Legend
             wrapperStyle={{ fontSize: 11, color: "#a89787" }}
             iconSize={10}

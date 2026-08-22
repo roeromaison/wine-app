@@ -909,3 +909,36 @@ table.data.heatmap .cell-count {
 .usage-ordered strong {
   color: var(--text);
 }
+
+/* 提案カードの本体。左に説明、右に小さなレーダー。 */
+.rec-body {
+  display: grid;
+  grid-template-columns: 1fr 168px;
+  gap: 18px;
+  align-items: start;
+}
+@media (max-width: 640px) {
+  .rec-body {
+    grid-template-columns: 1fr;
+  }
+  .rec-mini-radar {
+    max-width: 220px;
+    margin: 0 auto;
+  }
+}
+
+.rec-mini-radar {
+  width: 100%;
+}
+/* recharts の ResponsiveContainer は親の高さを 100% で取るので、
+   高さを持つ入れ物を1枚かぶせる。 */
+.rec-mini-chart {
+  height: 150px;
+}
+
+.rec-mini-caption {
+  text-align: center;
+  font-size: 10.5px;
+  color: var(--text-faint);
+  margin: 2px 0 0;
+}
