@@ -2078,5 +2078,31 @@
   "repurchase_0_10": 8,
   "id": 80,
   "search_query": "レガレアーリ ブォンセンソ タスカ ダルメリータ"
+ },
+ {
+  "name": "コステーラ 2022 アルジオラス",
+  "color": "red",
+  "country": "Italy",
+  "region": "Italy_Sardinia",
+  "variety": "Cannonau",
+  "vintage": 2022,
+  "price_yen": 3883,
+  "fruit": 4,
+  "floral": 2,
+  "herb": 3,
+  "spice": 2,
+  "oak": 4,
+  "vanilla": 2,
+  "earth": 2,
+  "mineral": 2,
+  "acid": 4,
+  "tannin": 3,
+  "sweet": 0,
+  "body": 3,
+  "finish": 3,
+  "overall_0_10": 8,
+  "repurchase_0_10": 7,
+  "id": 81,
+  "search_query": "コステーラ アルジオラス"
  }
 ]
