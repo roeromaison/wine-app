@@ -37,6 +37,15 @@ OUT_PATH = (
     / "sample-notes.json"
 )
 
+# 画面の文言に出す件数。「maison の記録80件」のように本数を直書きすると、
+# 記録を足すたびに古い数字が残ってしまう。ここから生成して import させる。
+META_PATH = (
+    Path(__file__).resolve().parent.parent.parent
+    / "frontend"
+    / "src"
+    / "sampleMeta.js"
+)
+
 KEEP_FIELDS = ["color", "country", "region", "variety", *FLAVOR_KEYS,
                "overall_0_10", "repurchase_0_10"]
 
@@ -67,6 +76,16 @@ def main() -> None:
         json.dumps(sample, ensure_ascii=False, indent=1) + "\n", encoding="utf-8"
     )
 
+    # 画面に出す件数。バックスラッシュを使わずに組み立てる
+    # （このファイル自体を自動生成するので、書式を単純に保つ）。
+    meta_lines = [
+        "// このファイルは scripts/build_sample.py が自動生成します。",
+        "// 手で編集しても、次にサンプルを作り直したときに上書きされます。",
+        f"export const SAMPLE_COUNT = {len(sample)};",
+        "",
+    ]
+    META_PATH.write_text(chr(10).join(meta_lines), encoding="utf-8")
+
     by_color: dict[str, int] = {}
     for note in sample:
         by_color[note["color"]] = by_color.get(note["color"], 0) + 1
@@ -75,6 +94,7 @@ def main() -> None:
     print(f"生成: {len(sample)}件  内訳: {by_color}")
     print(f"残した項目: {', '.join(KEEP_FIELDS)}")
     print(f"書き出し: {OUT_PATH}")
+    print(f"件数ファイル: {META_PATH}")
 
 
 if __name__ == "__main__":

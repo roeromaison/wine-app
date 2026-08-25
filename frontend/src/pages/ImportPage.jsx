@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { isBrowserStorage, store } from "../store.js";
 import { downloadCsv } from "../csv.js";
+import { SAMPLE_COUNT } from "../sampleMeta.js";
 
 const MODES = [
   {
@@ -215,7 +216,7 @@ export default function ImportPage({ notes, onImported, onToast }) {
           </div>
 
           <p className="meta-line" style={{ marginTop: 14 }}>
-            {"「サンプルを読み込む」は、maison の記録80件（商品名と価格は伏せたもの）を"}
+            {`「サンプルを読み込む」は、maison の記録${SAMPLE_COUNT}件（商品名と価格は伏せたもの）を`}
             {"入れて動きを確認するためのものです。"}
             <strong>{"いまの記録は置き換わります。"}</strong>
             {"残しておきたい場合は、先に上のCSV書き出しをしてください。"}

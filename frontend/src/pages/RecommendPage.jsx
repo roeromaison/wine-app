@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import FlavorRadar from "../components/FlavorRadar.jsx";
 import { api } from "../api.js";
+import { SAMPLE_COUNT } from "../sampleMeta.js";
 
 // 好みに近いワインの提案。
 //
@@ -153,7 +154,7 @@ export default function RecommendPage({ flavors, masters, notes }) {
               <>
                 <br />
                 {"「保存・読み込み」タブの「サンプルを読み込む」を押すと、"}
-                {"80件の記録が入った状態で試せます。"}
+                {`${SAMPLE_COUNT}件の記録が入った状態で試せます。`}
               </>
             )}
           </div>

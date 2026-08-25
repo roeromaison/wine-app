@@ -1,4 +1,5 @@
 import { isBrowserStorage } from "../store.js";
+import { SAMPLE_COUNT } from "../sampleMeta.js";
 
 // 使い方の説明。
 //
@@ -155,7 +156,7 @@ export default function UsagePage({ onNavigate, noteCount }) {
           <p className="meta-line" style={{ marginTop: 14 }}>
             {"手持ちの記録がまだ無い場合は、「保存・読み込み」タブの"}
             <strong>「サンプルを読み込む」</strong>
-            {"で、maison の記録80件を入れて動きを確認できます"}
+            {`で、maison の記録${SAMPLE_COUNT}件を入れて動きを確認できます`}
             {"（商品名と価格は伏せてあります）。"}
           </p>
         )}
