@@ -159,6 +159,11 @@ export default function RecordPage({ flavors, masters, notes, onSaved, onToast }
           )}
         </p>
 
+        <p className="lead-line">
+          {"香味13項目を0〜5で評価します。感じなければ0のままで構いません。"}
+          {"3本ほど記録すると、他のタブで傾向が見えはじめます。"}
+        </p>
+
         <label className="fieldlabel">ワイン名</label>
         <input
           type="text"

@@ -51,16 +51,19 @@ export default function UsagePage({ onNavigate, noteCount }) {
 
           {isBrowserStorage ? (
             <>
-              <Step n="2" title="終わったらCSVに書き出す">
-                {"「保存・読み込み」タブの「CSVに書き出す」を押して、"}
-                {"ファイルを手元に保存します。"}
-                <strong>
-                  {"この操作をしないと、ブラウザのデータを消したときに記録も消えます。"}
-                </strong>
+              <Step n="2" title="次に開いたときは、そのまま続きから">
+                {"記録はブラウザに自動で保存されます。"}
+                {"同じ端末・同じブラウザで開けば前回の続きから使えるので、"}
+                <strong>{"毎回ファイルを読み込む必要はありません。"}</strong>
               </Step>
-              <Step n="3" title="次に使うとき、そのCSVを読み込む">
-                {"「保存・読み込み」タブでファイルを選ぶと、続きから記録できます。"}
-                {"書き出したファイルはExcelでも開けます。"}
+              <Step n="3" title="ときどきCSVに書き出しておく（保険）">
+                {"「保存・読み込み」タブの「CSVに書き出す」で、手元にファイルを"}
+                {"残せます。"}
+                <strong>
+                  {"ブラウザのデータを消すと記録も消えるので、その備えです。"}
+                </strong>
+                {"端末を変えるときも、このファイルを読み込めば移せます。"}
+                {"Excelでも開けます。"}
               </Step>
             </>
           ) : (
@@ -79,28 +82,26 @@ export default function UsagePage({ onNavigate, noteCount }) {
         {isBrowserStorage && (
           <div className="usage-cycle">
             <p className="usage-step-title" style={{ marginTop: 0 }}>
-              2回目以降は、この3つの繰り返しです
+              2回目以降は、開いて足すだけです
             </p>
             <ol className="usage-list usage-ordered">
               <li>
-                {"「保存・読み込み」タブで、"}
-                <strong>前回書き出したCSVを読み込む</strong>
-                {"（前回までの記録が戻ります）"}
+                <strong>アプリを開く</strong>
+                {"（前回までの記録がそのまま入っています）"}
               </li>
               <li>
                 {"「記録する」タブで、"}
                 <strong>新しく飲んだ1本を足す</strong>
               </li>
-              <li>
-                {"「保存・読み込み」タブで、"}
-                <strong>また書き出す</strong>
-                {"。前のファイルに上書き保存すれば、常に最新の1本まで入った"}
-                {"ファイルが手元に残ります"}
-              </li>
             </ol>
             <p className="meta-line" style={{ marginTop: 12 }}>
-              {"読み込むときは「重複は飛ばす」のままで構いません。"}
-              {"同じワイン名・同じ日付の記録は二重に増えないようになっています。"}
+              {"CSVの書き出しは、毎回やる必要はありません。"}
+              {"ブラウザのデータを消したときや、別の端末に移したいときのための"}
+              {"保険です。月に一度など、区切りで書き出しておけば十分です。"}
+            </p>
+            <p className="meta-line" style={{ marginTop: 8 }}>
+              {"書き出したファイルを読み込むときは「重複は飛ばす」のままで"}
+              {"構いません。同じワイン名・同じ日付の記録は二重に増えません。"}
             </p>
           </div>
         )}

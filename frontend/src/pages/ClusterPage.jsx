@@ -88,6 +88,11 @@ export default function ClusterPage({ flavors, masters, notes }) {
           {result && <span className="count">{result.n}件</span>}
         </p>
 
+        <p className="lead-line">
+          {"香味の似ているワインを、いくつかのグループに自動で分けた結果です。"}
+          {"「自分はどういうタイプを高く評価しがちか」を見るためのものです。"}
+        </p>
+
         <div className="field-row" style={{ marginBottom: 18 }}>
           <div>
             <label className="fieldlabel">色</label>

@@ -110,19 +110,6 @@ h1 {
   border-bottom-color: var(--gold);
 }
 
-/* タブは7つあり、狭い画面では2〜3行に折り返す。横スクロールにすると
-   画面外のタブに気づかれないので、折り返しは残したまま高さだけ詰める。 */
-@media (max-width: 480px) {
-  .tabs {
-    gap: 2px;
-    margin-bottom: 20px;
-  }
-  .tab {
-    font-size: 13px;
-    padding: 8px 10px;
-  }
-}
-
 /* ---- レイアウト ---- */
 .grid {
   display: grid;
@@ -182,6 +169,12 @@ h1 {
   .field-row.three,
   .field-row.four {
     grid-template-columns: 1fr;
+  }
+  /* 選択肢が短い絞り込み（ヒートマップなど）は2列のまま。
+     1列にすると、データを見る前に4段分スクロールすることになる。 */
+  .field-row.four.filters {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
   }
 }
 
@@ -941,4 +934,160 @@ table.data.heatmap .cell-count {
   font-size: 10.5px;
   color: var(--text-faint);
   margin: 2px 0 0;
+}
+
+/* 各タブの先頭に置く「これで何が分かるか」の1行。
+   タブ名は専門用語のまま（PCA・クラスター）、意味だけ先に渡す。
+   用語を平易な言葉に置き換えると、中身まで薄く見えてしまうため。 */
+.lead-line {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.75;
+  margin: -6px 0 18px;
+  padding-left: 11px;
+  border-left: 2px solid var(--gold);
+}
+
+/* ---- 狭い画面（スマホ）の詰め ----
+   実測で、タイトル＋説明＋タブだけで画面の47%（390x844で394px）を
+   占めていた。何を開いても常に下半分しか使えない状態だったため、
+   ヘッダーを圧縮する。目標は画面の3割以下。 */
+@media (max-width: 480px) {
+  .app {
+    padding: 18px 14px 60px;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+
+  h1 {
+    font-size: 22px; /* 1行に収める（13文字 × 22px = 286px） */
+    margin-bottom: 6px;
+  }
+
+  .subhead {
+    font-size: 12.5px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  /* 2文目（分析タブの案内）は「アプリの使い方」タブで説明しているので、
+     狭い画面では省いて高さを稼ぐ。 */
+  .subhead span:nth-child(2) {
+    display: none;
+  }
+
+  /* タブは7つ。横スクロールにすると画面外のタブに気づかれないので、
+     折り返しは残したまま2行に収まるところまで詰める。 */
+  .tabs {
+    gap: 3px;
+    margin-bottom: 18px;
+  }
+  .tab {
+    font-size: 12px;
+    padding: 7px 9px;
+  }
+
+  /* パネルの余白も詰める。内側の幅が広がるほど、香味ドットや表が楽になる。 */
+  .panel {
+    padding: 18px 16px 22px;
+    border-radius: 12px;
+  }
+  .panel + .panel {
+    margin-top: 14px;
+  }
+  .panel-title {
+    font-size: 15.5px;
+    margin-bottom: 14px;
+  }
+
+  /* ---- タップ領域 ----
+     香味ドットは直径20pxで、推奨（44px前後）の半分以下だった。
+     このアプリでいちばん多く押す要素なので、幅いっぱいまで広げる。 */
+  .flavor-row {
+    grid-template-columns: 58px 1fr;
+    gap: 10px;
+  }
+  .flavor-list {
+    gap: 10px;
+  }
+  .dotscale {
+    gap: 8px;
+  }
+  .dot {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* 総合評価・また買いたい度も同じ理由で広げる。
+     横並びだとラベルが3行に折り返していたので、縦に積む。 */
+  .overall-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+  }
+  .overall-scale {
+    gap: 3px;
+    width: 100%;
+  }
+  .overall-dot {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* ---- ヒートマップのスマホ表示 ----
+   産地×品種の表は幅900px超になり、390pxの画面では67%が画面外に出る。
+   横スクロールで読ませるより、上位だけを縦に並べたほうが情報が届く。
+   広い画面では従来どおり表を出し、ランキングは隠す。 */
+.heat-ranking,
+.heat-ranking-note {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .heat-ranking {
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .heat-ranking li {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .heat-rank-name {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .heat-rank-score {
+    font-family: "Work Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 6px;
+  }
+  .heat-rank-count {
+    font-size: 11px;
+    color: var(--text-faint);
+    min-width: 30px;
+    text-align: right;
+  }
+  .heat-ranking-note {
+    display: block;
+    margin-top: 12px;
+  }
+
+  /* 表と凡例は隠す */
+  .heat-scroll,
+  .heat-legend {
+    display: none;
+  }
 }

@@ -30,7 +30,16 @@ export function notesToCsv(notes) {
   return lines.join("\r\n");
 }
 
-export function downloadCsv(notes, filename = "wine_log.csv") {
+// 書き出したファイルが何世代も溜まったときに、どれが新しいか分かるよう
+// ファイル名に日付を入れる。すべて同じ名前だと (1) (2) が付くだけで区別できない。
+function todayStamp() {
+  const d = new Date();
+  const p = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}`;
+}
+
+export function downloadCsv(notes, filename) {
+  filename = filename ?? `wine_log_${todayStamp()}.csv`;
   // Excel は BOM が無いとUTF-8のCSVを文字化けさせるので付ける。
   const blob = new Blob(["﻿" + notesToCsv(notes)], {
     type: "text/csv;charset=utf-8;",

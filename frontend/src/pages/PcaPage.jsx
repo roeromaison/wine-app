@@ -68,6 +68,11 @@ export default function PcaPage({ flavors, masters, notes }) {
           {result && <span className="count">{result.n}件</span>}
         </p>
 
+        <p className="lead-line">
+          {"香味13項目を2つの軸に圧縮して、記録どうしの似ている・似ていないを"}
+          {"位置で示した図です。近くにある2本は、香味の傾向が似ています。"}
+        </p>
+
         <div className="field-row" style={{ marginBottom: 18 }}>
           <div>
             <label className="fieldlabel">色</label>
