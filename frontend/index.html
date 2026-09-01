@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ワインテイスティング記録</title>
+    <title>ワインテイスティング記録アプリ｜香味13項目で好みを分析（無料・登録不要）</title>
 
     <!-- ホーム画面に追加したときの見え方（PWA）。
          アドレスバーが消え、アイコンと名前が付き、電波が悪くても開ける。 -->
@@ -12,6 +12,37 @@
       name="description"
       content="飲んだワインの香味13項目を記録して、好みの傾向を分析するアプリ。登録不要・無料。"
     />
+    <!-- リンクを貼ったときに出るカード（note・X・LINEなど）。
+         画像に文字は入れていない。タイトルと説明が画像の横に出るため。
+         URLは絶対パスでないと読まれないので、ドメインを変えたらここも直す。 -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ワインをデータで飲んでいます" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:url" content="https://wine-app-web.onrender.com/" />
+    <meta
+      property="og:title"
+      content="ワインテイスティング記録アプリ｜香味13項目で好みを分析"
+    />
+    <meta
+      property="og:description"
+      content="飲んだワインの香味を13項目で記録すると、好みの地図や似たタイプのグループ分けが見られます。登録不要・無料。"
+    />
+    <meta property="og:image" content="https://wine-app-web.onrender.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="ワイングラスと、香味13項目のレーダーチャート" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="ワインテイスティング記録アプリ｜香味13項目で好みを分析"
+    />
+    <meta
+      name="twitter:description"
+      content="飲んだワインの香味を13項目で記録すると、好みの地図や似たタイプのグループ分けが見られます。登録不要・無料。"
+    />
+    <meta name="twitter:image" content="https://wine-app-web.onrender.com/og-image.png" />
+
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="icon" href="/icon-192.png" type="image/png" />
