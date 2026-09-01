@@ -948,6 +948,63 @@ table.data.heatmap .cell-count {
   border-left: 2px solid var(--gold);
 }
 
+/* ---- 任意項目の折りたたみ ----
+   必須はワイン名だけ。それ以外を常時表示すると「全部埋めるもの」に見えて、
+   記録すること自体が億劫になる。 */
+.optional {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg-panel-raised);
+  margin-bottom: 20px;
+}
+.optional > summary {
+  cursor: pointer;
+  padding: 12px 14px;
+  font-size: 13.5px;
+  color: var(--text-dim);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.optional > summary::-webkit-details-marker {
+  display: none;
+}
+/* 開閉の向きが分かる三角。marker を消しているので自前で描く。 */
+.optional > summary::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 5px solid var(--gold);
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  transition: transform 0.15s ease;
+}
+.optional[open] > summary::before {
+  transform: rotate(90deg);
+}
+.optional > summary span {
+  color: var(--text-faint);
+  font-size: 12px;
+}
+.optional > summary:hover {
+  color: var(--text);
+}
+.optional[open] > summary {
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 14px;
+}
+.optional > *:not(summary) {
+  padding-left: 14px;
+  padding-right: 14px;
+}
+.optional-note {
+  font-size: 12px;
+  color: var(--text-faint);
+  line-height: 1.7;
+  margin: 0 0 14px;
+}
+
 /* ---- 狭い画面（スマホ）の詰め ----
    実測で、タイトル＋説明＋タブだけで画面の47%（390x844で394px）を
    占めていた。何を開いても常に下半分しか使えない状態だったため、

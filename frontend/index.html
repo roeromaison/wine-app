@@ -4,6 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ワインテイスティング記録</title>
+
+    <!-- ホーム画面に追加したときの見え方（PWA）。
+         アドレスバーが消え、アイコンと名前が付き、電波が悪くても開ける。 -->
+    <meta name="theme-color" content="#1b1512" />
+    <meta
+      name="description"
+      content="飲んだワインの香味13項目を記録して、好みの傾向を分析するアプリ。登録不要・無料。"
+    />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" href="/icon-192.png" type="image/png" />
+    <!-- iOS はマニフェストだけだとアドレスバーが残る版があるため、旧来の指定も残す -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="ワイン記録" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

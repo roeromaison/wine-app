@@ -160,11 +160,11 @@ export default function RecordPage({ flavors, masters, notes, onSaved, onToast }
         </p>
 
         <p className="lead-line">
-          {"香味13項目を0〜5で評価します。感じなければ0のままで構いません。"}
-          {"3本ほど記録すると、他のタブで傾向が見えはじめます。"}
+          {"入力が要るのはワイン名と香味だけです。感じなかった項目は0のままで"}
+          {"構いません。3本ほど記録すると、他のタブで傾向が見えはじめます。"}
         </p>
 
-        <label className="fieldlabel">ワイン名</label>
+        <label className="fieldlabel">ワイン名（必須）</label>
         <input
           type="text"
           placeholder="例：シャブリ プルミエクリュ モンマン"
@@ -173,24 +173,20 @@ export default function RecordPage({ flavors, masters, notes, onSaved, onToast }
           style={{ marginBottom: 12 }}
         />
 
-        <div className="field-row">
-          <div>
-            <label className="fieldlabel">飲んだ日</label>
-            <input
-              type="date"
-              value={form.date}
-              onChange={(e) => setField("date", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="fieldlabel">ヴィンテージ</label>
-            <input
-              type="number"
-              placeholder="例：2015"
-              value={form.vintage}
-              onChange={(e) => setField("vintage", e.target.value)}
-            />
-          </div>
+        <label className="fieldlabel">色</label>
+        <div className="colortoggle">
+          {masters.colors.map((c) => (
+            <button
+              key={c.key}
+              type="button"
+              className={`colorbtn ${c.key} ${
+                form.color === c.key ? "active " + c.key : ""
+              }`}
+              onClick={() => setField("color", c.key)}
+            >
+              {c.label}
+            </button>
+          ))}
         </div>
 
         <div className="field-row">
@@ -241,88 +237,107 @@ export default function RecordPage({ flavors, masters, notes, onSaved, onToast }
           ))}
         </datalist>
 
-        <div className="field-row three">
-          <div>
-            <label className="fieldlabel">価格（円）</label>
-            <input
-              type="number"
-              placeholder="3800"
-              value={form.price_yen}
-              onChange={(e) => setField("price_yen", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="fieldlabel">購入先</label>
-            <input
-              type="text"
-              placeholder="EC / SHOP"
-              value={form.purchase}
-              onChange={(e) => setField("purchase", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="fieldlabel">アルコール度数</label>
-            <input
-              type="number"
-              step="0.1"
-              placeholder="13.5"
-              value={form.abv}
-              onChange={(e) => setField("abv", e.target.value)}
-            />
-          </div>
-        </div>
+        {/* 任意項目は畳んでおく。必須はワイン名だけで、他は分析にも
+            使っていない。毎回すべてを埋める画面に見えると、記録そのものが
+            億劫になるため。 */}
+        <details className="optional">
+          <summary>
+            詳細を入力する<span>（任意）</span>
+          </summary>
 
-        <div className="field-row">
-          <div>
-            <label className="fieldlabel">提供温度</label>
-            <input
-              type="text"
-              placeholder="8C"
-              value={form.temp}
-              onChange={(e) => setField("temp", e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="fieldlabel">デカンタ（分）</label>
-            <input
-              type="number"
-              placeholder="0"
-              value={form.decant_min}
-              onChange={(e) => setField("decant_min", e.target.value)}
-            />
-          </div>
-        </div>
+          <p className="optional-note">
+            {"どれも空のままで記録できます。飲んだ日だけは、"}
+            {"あとでファイルを読み込むときの重複チェックに使います。"}
+          </p>
 
-        <label className="fieldlabel">色</label>
-        <div className="colortoggle">
-          {masters.colors.map((c) => (
-            <button
-              key={c.key}
-              type="button"
-              className={`colorbtn ${c.key} ${
-                form.color === c.key ? "active " + c.key : ""
-              }`}
-              onClick={() => setField("color", c.key)}
-            >
-              {c.label}
-            </button>
-          ))}
-        </div>
+          <div className="field-row">
+            <div>
+              <label className="fieldlabel">飲んだ日</label>
+              <input
+                type="date"
+                value={form.date}
+                onChange={(e) => setField("date", e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="fieldlabel">ヴィンテージ</label>
+              <input
+                type="number"
+                placeholder="例：2015"
+                value={form.vintage}
+                onChange={(e) => setField("vintage", e.target.value)}
+              />
+            </div>
+          </div>
 
-        {/* 泡は色ではなく style で表す（テンプレートのドロップダウンに合わせている）。 */}
-        <label className="fieldlabel">スタイル</label>
-        <select
-          value={form.style}
-          onChange={(e) => setField("style", e.target.value)}
-          style={{ marginBottom: 20 }}
-        >
-          <option value="">未設定</option>
-          {masters.styles.map((s) => (
-            <option key={s} value={s}>
-              {s === "still" ? "スティル（非発泡）" : s === "sparkling" ? "スパークリング" : s}
-            </option>
-          ))}
-        </select>
+          <div className="field-row three">
+            <div>
+              <label className="fieldlabel">価格（円）</label>
+              <input
+                type="number"
+                placeholder="3800"
+                value={form.price_yen}
+                onChange={(e) => setField("price_yen", e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="fieldlabel">購入先</label>
+              <input
+                type="text"
+                placeholder="EC / SHOP"
+                value={form.purchase}
+                onChange={(e) => setField("purchase", e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="fieldlabel">アルコール度数</label>
+              <input
+                type="number"
+                step="0.1"
+                placeholder="13.5"
+                value={form.abv}
+                onChange={(e) => setField("abv", e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="field-row">
+            <div>
+              <label className="fieldlabel">提供温度</label>
+              <input
+                type="text"
+                placeholder="8C"
+                value={form.temp}
+                onChange={(e) => setField("temp", e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="fieldlabel">デカンタ（分）</label>
+              <input
+                type="number"
+                placeholder="0"
+                value={form.decant_min}
+                onChange={(e) => setField("decant_min", e.target.value)}
+              />
+            </div>
+          </div>
+
+          {/* 泡は色ではなく style で表す（テンプレートのドロップダウンに合わせている）。 */}
+          <label className="fieldlabel">スタイル</label>
+          <select
+            value={form.style}
+            onChange={(e) => setField("style", e.target.value)}
+            style={{ marginBottom: 20 }}
+          >
+            <option value="">未設定</option>
+            {masters.styles.map((s) => (
+              <option key={s} value={s}>
+                {s === "still" ? "スティル（非発泡）" : s === "sparkling" ? "スパークリング" : s}
+              </option>
+            ))}
+          </select>
+
+        </details>
 
         <p className="panel-title" style={{ marginTop: 4 }}>
           香味評価<span className="count">0〜5</span>

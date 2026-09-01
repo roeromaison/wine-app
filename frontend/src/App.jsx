@@ -20,6 +20,14 @@ const TABS = [
   { key: "import", label: "保存・読み込み" },
 ];
 
+// ホーム画面のアイコンから開かれたかどうか。
+// iOS では、ホーム画面から開いたアプリとSafariで保存領域が別々になる。
+// つまりSafariで記録した内容は、ホーム画面から開くと見えない。
+// 記録がゼロのときだけ、その説明を出すために使う。
+const isStandalone = () =>
+  window.matchMedia?.("(display-mode: standalone)").matches === true ||
+  window.navigator.standalone === true;
+
 const EMPTY_MASTERS = {
   countries: [],
   regions: [],
@@ -100,13 +108,25 @@ export default function App() {
         {/* 公開版の初回訪問。記録がゼロだとどのグラフも空になってしまうので、
             まず何を試せばいいかをここで示す。 */}
         {!bootError && isBrowserStorage && notes.length === 0 && (
-          <div className="notice" style={{ marginBottom: 22 }}>
-            {"記録はお使いのブラウザの中だけに保存され、サーバーには送られません。"}
-            {"初めての方は"}
-            <strong>「アプリの使い方」</strong>
-            {"タブをご覧ください。記録を続けるための手順と、"}
-            {"サンプルの読み込み方をまとめてあります。"}
-          </div>
+          isStandalone() ? (
+            <div className="notice" style={{ marginBottom: 22 }}>
+              {"ホーム画面のアイコンから開いています。"}
+              <strong>
+                {"iPhoneでは、ブラウザで記録した内容はここには引き継がれません"}
+              </strong>
+              {"（保存場所が別々のため）。ブラウザ側で記録済みの場合は、"}
+              {"そちらで「保存・読み込み」タブからCSVに書き出し、"}
+              {"ここで読み込んでください。以降はこの画面だけで完結します。"}
+            </div>
+          ) : (
+            <div className="notice" style={{ marginBottom: 22 }}>
+              {"記録はお使いのブラウザの中だけに保存され、サーバーには送られません。"}
+              {"初めての方は"}
+              <strong>「アプリの使い方」</strong>
+              {"タブをご覧ください。記録を続けるための手順と、"}
+              {"サンプルの読み込み方をまとめてあります。"}
+            </div>
+          )
         )}
 
         {!bootError && flavors.length > 0 && (
