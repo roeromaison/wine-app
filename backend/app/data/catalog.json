@@ -521,7 +521,7 @@
  },
  {
   "name": "ヴィニエティ デル・サレント ゾッラ プリミティーボ・ディ・マンドゥーリア 2022",
-  "color": "white",
+  "color": "red",
   "country": "Italy",
   "region": "Italy_Puglia",
   "variety": "Primitivo",
@@ -2104,5 +2104,31 @@
   "repurchase_0_10": 7,
   "id": 81,
   "search_query": "コステーラ アルジオラス"
+ },
+ {
+  "name": "ボーグル・ヴィンヤーズ オールド・ヴァイン ジンファンデル 2022",
+  "color": "red",
+  "country": "UnitedStates",
+  "region": "United States_California",
+  "variety": "Zinfandel",
+  "vintage": 2022,
+  "price_yen": 2673,
+  "fruit": 4,
+  "floral": 2,
+  "herb": 0,
+  "spice": 2,
+  "oak": 4,
+  "vanilla": 1,
+  "earth": 1,
+  "mineral": 1,
+  "acid": 3,
+  "tannin": 3,
+  "sweet": 1,
+  "body": 3,
+  "finish": 4,
+  "overall_0_10": 8,
+  "repurchase_0_10": 9,
+  "id": 82,
+  "search_query": "ボーグル・ヴィンヤーズ オールド・ヴァイン ジンファンデル"
  }
 ]
